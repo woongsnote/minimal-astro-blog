@@ -1,16 +1,20 @@
 ---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostItem from "../components/PostItem.astro";
+import type { CollectionEntry } from "astro:content";
 
+const allPosts: CollectionEntry<"blog">[] = await getCollection("blog");
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Astro 블로그 예제"
+  description="Astro와 TailwindCSS로 구현한 블로그">
+  <ul>
+    {
+      allPosts.map((post) => (
+        <PostItem link={`/blog/${post.slug}`} title={post.data.title} />
+      ))
+    }
+  </ul>
+</BaseLayout>
